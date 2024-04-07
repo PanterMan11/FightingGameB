@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class Move : MonoBehaviour
 {
 
     [SerializeField] Rigidbody2D rb;
@@ -13,7 +13,7 @@ public class Test : MonoBehaviour
     private float moveInput;
     private bool isGrounded;
     [SerializeField] Transform feetPos;
-    [SerializeField] float checkRadius;   
+    [SerializeField] float checkRadius;
     [SerializeField] LayerMask whatIsGround;
 
     void Start()
@@ -22,7 +22,7 @@ public class Test : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
     }
 
-    
+
     void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
@@ -37,7 +37,7 @@ public class Test : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
-        if(isGrounded && Input.GetButtonDown("Jump"))
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
             rb.velocity = Vector2.up * jumpForce;
         }
@@ -46,10 +46,11 @@ public class Test : MonoBehaviour
     void FaceMoveDirection()
     {
 
-        if(moveInput > 0)
+        if (moveInput > 0)
         {
             sr.flipX = false;
-        }else if(moveInput < 0)
+        }
+        else if (moveInput < 0)
         {
             sr.flipX = true;
         }
@@ -60,7 +61,7 @@ public class Test : MonoBehaviour
         }
 
 
-            
+
 
     }
 }
