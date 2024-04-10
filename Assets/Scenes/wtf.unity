@@ -492,9 +492,9 @@ MonoBehaviour:
   moveSpeed: 5
   sr: {fileID: 0}
   jumpForce: 15
-  dashingPower: 12
-  dashingTime: 0.01
-  dashingCooldown: 0.1
+  dashingPower: 16
+  dashingTime: 0.2
+  dashingCooldown: 0.2
   feetPos: {fileID: 849153698}
   checkRadius: 0.25
   whatIsGround:
