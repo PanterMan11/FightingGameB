@@ -176,10 +176,15 @@ public class Move : MonoBehaviour
         if (moveInput > 0)
         {
             sr.flipX = false;
+          
         }
         else if (moveInput < 0)
         {
             sr.flipX = true;
+            foreach (Normals boxes in attackScript.allNor)
+            {
+                //boxes.HitBox.transform.rotation = -1f;
+            }
         }
     }
     void OnDrawGizmos()

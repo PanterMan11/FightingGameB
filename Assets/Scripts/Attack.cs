@@ -54,10 +54,19 @@ public class Attack : MonoBehaviour {
     private void CheckForInput()
     {
 
-        if(VeriInput == 0 && HoriInput == 0 && Input.GetButtonUp("Punch"))
+        if(VeriInput == 0 && HoriInput == 0 && Input.GetButtonDown("Punch"))
         {
-            StartCoroutine(allNor[0].Startup()); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
+            StartCoroutine(Activate(allNor[0])); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
+            Debug.Log("ur puncjin");
         }
+    }
+
+    public IEnumerator Activate(Normals current)
+    {
+        yield return new WaitForSeconds(current.startupFrames);
+        current.HitBox.SetActive(true);
+        yield return new WaitForSeconds(current.hitFrames);
+        current.HitBox.SetActive(false);
     }
 }
 
@@ -69,19 +78,4 @@ public class Normals
     public float startupFrames;
     public float hitFrames;
     public float whiffFrames;
-
-
-    
-    public Normals getPunch()
-    {
-        return null;
-
-    }
-
-
-    public IEnumerator Startup()
-    {
-        yield return new WaitForSeconds(startupFrames); 
-
-    }
 }
