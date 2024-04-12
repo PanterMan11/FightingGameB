@@ -25,6 +25,7 @@ public class Move : MonoBehaviour
     float jumpTime;
     [SerializeField] float jumpStartTime;
     bool isJumping;
+    [SerializeField] Attack attackScript;
 
     void Start()
     {
@@ -34,8 +35,8 @@ public class Move : MonoBehaviour
     
     
     void Update()
-    {
-
+    { 
+        if (!attackScript.isCoolDown) {
 
         if (isDashing)
         {
@@ -45,17 +46,18 @@ public class Move : MonoBehaviour
         moveInput = Input.GetAxisRaw("Horizontal");
         FaceMoveDirection();
         Jump();
-        if(Input.GetButtonDown("Horizontal")&& moveInput == 1 && canDash == true)
+        if (Input.GetButtonDown("Horizontal") && moveInput == 1 && canDash == true)
         { // DASH RIGHT
             float timeSinceLastClick = Time.time - lastClickTime;
-            if(timeSinceLastClick <= DOUBE_TIME && moveInput == 1) {
+            if (timeSinceLastClick <= DOUBE_TIME && moveInput == 1)
+            {
                 Debug.Log("IDASH RIGHT");
                 StartCoroutine(Dash());
             }
 
             //Debug.Log(timeSinceLastClick);
             lastClickTime = Time.time;
-        } 
+        }
         else if (Input.GetButtonDown("Horizontal") && moveInput == -1 && canDash == true)
         {
             // DASH LEFT
@@ -68,7 +70,8 @@ public class Move : MonoBehaviour
             //Debug.Log(timeSinceLastClick);
             lastClickTime = Time.time;
 
-        } else if (Input.GetButtonDown("Jump") && canDash == true)
+        }
+        else if (Input.GetButtonDown("Jump") && canDash == true)
         {
             float timeSinceLastClick = Time.time - lastClickTime;
             if (timeSinceLastClick <= DOUBE_TIME)
@@ -79,22 +82,25 @@ public class Move : MonoBehaviour
             //Debug.Log(timeSinceLastClick);
             lastClickTime = Time.time;
 
-
+        }
         }
     }
     private void FixedUpdate()
     {
-        if (isDashing)
+        if (!attackScript.isCoolDown)
         {
-            return; // this is so the player is locked in a dash and cant fumble around while dashing 
+            if (isDashing)
+            {
+                return; // this is so the player is locked in a dash and cant fumble around while dashing 
+            }
+            isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+            //Debug.Log("pls " + isGrounded);
+            if (canDash == false && isGrounded == true)
+            {
+                StartCoroutine(DashCooldown());
+            }
+            rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
         }
-        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-        //Debug.Log("pls " + isGrounded);
-        if (canDash == false && isGrounded == true)
-        {
-            StartCoroutine(DashCooldown());
-        }
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
     void Jump()
     {
