@@ -8,7 +8,7 @@ public class Move : MonoBehaviour
 
     [SerializeField] Rigidbody2D rb;
     [SerializeField] float moveSpeed;
-    [SerializeField] SpriteRenderer sr;
+    
     public float jumpForce;
     private float moveInput;
     private bool isGrounded;
@@ -26,11 +26,12 @@ public class Move : MonoBehaviour
     [SerializeField] float jumpStartTime;
     bool isJumping;
     [SerializeField] Attack attackScript;
+    bool facingRight;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
+        
     }
     
     
@@ -163,7 +164,14 @@ public class Move : MonoBehaviour
 
     
 
+    void Flip()
+    {
+        Vector2 currentScale = gameObject.transform.localScale;
+        currentScale.x *= -1;
+        gameObject.transform.localScale = currentScale;
 
+        facingRight = !facingRight;
+    }
 
 
 
@@ -172,15 +180,17 @@ public class Move : MonoBehaviour
 
     void FaceMoveDirection()
     {
+        
 
-        if (moveInput > 0)
+        if (moveInput > 0 && facingRight)
         {
-            sr.flipX = false;
+            Flip();
           
         }
-        else if (moveInput < 0)
+        else if (moveInput < 0 && !facingRight)
         {
-            sr.flipX = true;
+            
+            Flip();
             foreach (Normals boxes in attackScript.allNor)
             {
                 //boxes.HitBox.transform.rotation = -1f;
