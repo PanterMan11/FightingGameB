@@ -34,6 +34,7 @@ public class Attack : MonoBehaviour {
     
     [NonSerialized] public bool isCoolDown;
     [SerializeField] public List<Normals> allNor = new List<Normals>(4);
+    [SerializeField] public int facing;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +48,7 @@ public class Attack : MonoBehaviour {
         VeriInput = Input.GetAxisRaw("Vertical");
         HoriInput = Input.GetAxisRaw("Horizontal");
         //Debug.Log("are ya punching yet "+Input.GetButtonUp("Punch"));
+    
         CheckForInput();
         
     }
@@ -54,7 +56,7 @@ public class Attack : MonoBehaviour {
     private void CheckForInput()
     {
 
-        if(VeriInput == 0 && HoriInput == 0 && Input.GetButtonDown("Punch"))
+        if(Input.GetButtonDown("Punch"))
         {
             StartCoroutine(Activate(allNor[0])); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
             Debug.Log("ur puncjin");
@@ -67,6 +69,22 @@ public class Attack : MonoBehaviour {
         current.HitBox.SetActive(true);
         yield return new WaitForSeconds(current.hitFrames);
         current.HitBox.SetActive(false);
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("Unit"))
+        {
+            if (gameObject.GetComponent<Move>().facingRight)
+            {
+                facing = -1;
+            }
+            else
+            {
+                facing = 1;
+            }
+            col.gameObject.GetComponent<UnitProperties>().GetHit(facing);
+        }
     }
 }
 

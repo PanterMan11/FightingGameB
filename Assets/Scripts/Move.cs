@@ -26,12 +26,13 @@ public class Move : MonoBehaviour
     [SerializeField] float jumpStartTime;
     bool isJumping;
     [SerializeField] Attack attackScript;
-    bool facingRight;
+    public bool facingRight;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        
+        Physics2D.IgnoreLayerCollision(7, 7);
+
     }
     
     
@@ -171,6 +172,7 @@ public class Move : MonoBehaviour
         gameObject.transform.localScale = currentScale;
 
         facingRight = !facingRight;
+
     }
 
 
@@ -197,6 +199,7 @@ public class Move : MonoBehaviour
             }
         }
     }
+
     void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(feetPos.position, checkRadius);
