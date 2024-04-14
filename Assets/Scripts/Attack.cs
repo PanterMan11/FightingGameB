@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +35,18 @@ public class Attack : MonoBehaviour {
     
     [NonSerialized] public bool isCoolDown;
     [SerializeField] public List<Normals> allNor = new List<Normals>(4);
-    [SerializeField] public int facing;
+    [NonSerialized] public float facing;
+    [SerializeField] public enum Attacks // Bread i did this cuz i idiot if u wanna u can fix this lol
+    {
+        Punch = 0,
+        Kick = 1,
+        Slash = 2,
+        HSlash = 3,
+        None = 100
+    };
+    [NonSerialized] Attacks currentAttack = Attacks.None;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,8 +70,30 @@ public class Attack : MonoBehaviour {
 
         if(Input.GetButtonDown("Punch"))
         {
+            currentAttack = Attacks.Punch;
             StartCoroutine(Activate(allNor[0])); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
-            Debug.Log("ur puncjin");
+            Debug.Log("ur punchin");
+        }
+
+        else if (Input.GetButtonDown("Kick"))
+        {
+            currentAttack = Attacks.Kick;
+            StartCoroutine(Activate(allNor[1])); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
+            Debug.Log("ur kickin");
+        }
+
+        else if (Input.GetButtonDown("Slash"))
+        {
+            currentAttack = Attacks.Slash;
+            StartCoroutine(Activate(allNor[2])); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
+            Debug.Log("ur slashin");
+        }
+
+        else if (Input.GetButtonDown("HSlash"))
+        {
+            currentAttack = Attacks.HSlash;
+            StartCoroutine(Activate(allNor[3])); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
+            Debug.Log("ur slashin bigtime");
         }
     }
 
@@ -69,6 +103,7 @@ public class Attack : MonoBehaviour {
         current.HitBox.SetActive(true);
         yield return new WaitForSeconds(current.hitFrames);
         current.HitBox.SetActive(false);
+        currentAttack = Attacks.None;
     }
 
     public void OnTriggerEnter2D(Collider2D col)
@@ -77,13 +112,13 @@ public class Attack : MonoBehaviour {
         {
             if (gameObject.GetComponent<Move>().facingRight)
             {
-                facing = -1;
+                facing = -1f;
             }
             else
             {
-                facing = 1;
+                facing = 1f;
             }
-            col.gameObject.GetComponent<UnitProperties>().GetHit(facing);
+            col.gameObject.GetComponent<UnitProperties>().GetHit(allNor[(int)currentAttack].knockbackPower * facing, allNor[(int)currentAttack].hitPower);
         }
     }
 }
@@ -96,4 +131,6 @@ public class Normals
     public float startupFrames;
     public float hitFrames;
     public float whiffFrames;
+    public float knockbackPower;
+    public float hitPower;
 }

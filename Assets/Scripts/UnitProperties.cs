@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnitProperties : MonoBehaviour
 {
-    [SerializeField] int hp;
+    [SerializeField] float hp;
     [SerializeField] int maxhp;
     [SerializeField] TMP_Text hpBar;
     [SerializeField] Rigidbody2D rb;
@@ -15,15 +15,15 @@ public class UnitProperties : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public IEnumerator Knockback(int side)
+    public IEnumerator Knockback(float side)
     {
         rb.velocity += new Vector2(side, 0);
         yield return new WaitForSeconds(0.2f);
         rb.velocity -= new Vector2(side, 0);
     }
-    public void GetHit(int side)
+    public void GetHit(float side, float damage)
     {
-        hp -= 20;
+        hp -= damage;
         StartCoroutine(Knockback(side));  
     }
     

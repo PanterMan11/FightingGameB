@@ -11,9 +11,18 @@ public class Move : MonoBehaviour
     
     public float jumpForce;
     private float moveInput;
-    private bool isGrounded;
     bool canDash = true;
-    bool isDashing ;
+
+    bool isDashing; 
+    private bool isGrounded;
+    [NonSerialized] public bool isMoving;
+    [NonSerialized] public bool isStunned;
+    [NonSerialized] public bool isStanding;
+    [NonSerialized] public bool isKnockedback;
+    [NonSerialized] public bool isAttacking;
+    [NonSerialized] public bool isInvisible;
+
+
     [SerializeField] float dashingPower;
     [SerializeField] float dashingTime;
     [SerializeField] float dashingCooldown;
