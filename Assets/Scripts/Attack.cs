@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -32,11 +33,11 @@ public class Attack : MonoBehaviour {
 
     float VeriInput;
     float HoriInput;
-    
+    [SerializeField] Move move_script;
     [NonSerialized] public bool isCoolDown;
     [SerializeField] public List<Normals> allNor = new List<Normals>(4);
     [NonSerialized] public float facing;
-    [SerializeField] public enum Attacks // Bread i did this cuz i idiot if u wanna u can fix this lol
+    [SerializeField] public enum Attacks // Bread i did this cuz i idiot if u wanna u can fix this lol E
     {
         Punch = 0,
         Kick = 1,
@@ -85,7 +86,9 @@ public class Attack : MonoBehaviour {
         else if (Input.GetButtonDown("Slash"))
         {
             currentAttack = Attacks.Slash;
+            
             StartCoroutine(Activate(allNor[2])); // i guess ill have to hardcode all the areas for the allNor list of objects mmmm 
+            
             Debug.Log("ur slashin");
         }
 
@@ -99,10 +102,12 @@ public class Attack : MonoBehaviour {
 
     public IEnumerator Activate(Normals current)
     {
+        move_script.an.SetBool(current.DebugName, true);
         yield return new WaitForSeconds(current.startupFrames);
         current.HitBox.SetActive(true);
         yield return new WaitForSeconds(current.hitFrames);
         current.HitBox.SetActive(false);
+        move_script.an.SetBool(current.DebugName, false);
         currentAttack = Attacks.None;
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Move : MonoBehaviour
@@ -8,7 +9,7 @@ public class Move : MonoBehaviour
 
     [SerializeField] Rigidbody2D rb;
     [SerializeField] float moveSpeed;
-    
+    [SerializeField] public Animator an;
     public float jumpForce;
     private float moveInput;
     bool canDash = true;
@@ -23,7 +24,7 @@ public class Move : MonoBehaviour
     [NonSerialized] public bool isInvisible;
 
 
-    [SerializeField] float dashingPower;
+    [SerializeField] float dashingPower; 
     [SerializeField] float dashingTime;
     [SerializeField] float dashingCooldown;
     float lastClickTime;    
@@ -35,7 +36,7 @@ public class Move : MonoBehaviour
     [SerializeField] float jumpStartTime;
     bool isJumping;
     [SerializeField] Attack attackScript;
-    public bool facingRight;
+    [NonSerialized]public bool facingRight;
 
     void Start()
     {
@@ -102,6 +103,7 @@ public class Move : MonoBehaviour
         {
             if (isDashing)
             {
+                
                 return; // this is so the player is locked in a dash and cant fumble around while dashing 
             }
             isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
@@ -111,6 +113,14 @@ public class Move : MonoBehaviour
                 StartCoroutine(DashCooldown());
             }
             rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+            if(moveInput != 0)
+            {
+                an.SetBool("isMove", true);
+            }
+            else
+            {
+                an.SetBool("isMove", false);
+            }
         }
     }
     void Jump()
@@ -121,6 +131,7 @@ public class Move : MonoBehaviour
         if (isGrounded == true && Input.GetButtonDown("Jump"))
         {
             isJumping = true;
+            
             jumpTime = jumpStartTime;
             rb.velocity = Vector2.up * jumpForce;
         }
@@ -129,12 +140,14 @@ public class Move : MonoBehaviour
         if (isJumping == true && Input.GetButton("Jump"))
         {
             if (jumpTime> 0) {
+                an.SetBool("isJump", true);
                 rb.velocity = Vector2.up * jumpForce;
                 jumpTime -= Time.deltaTime ;
                 //Debug.Log(jumpTime);
             }
             else { 
                 isJumping=false;
+                
                 //Debug.Log("BIIG JUMp NO ELSE");
             }
             
@@ -143,7 +156,12 @@ public class Move : MonoBehaviour
         if (Input.GetButtonUp("Jump"))
         {
             isJumping = false;
+            an.SetBool("isJump", false);
             //Debug.Log("BIIG JUMp NO GETUP");
+        }
+        if (isGrounded)
+        {
+            an.SetBool("isJump", false);
         }
     }
 
@@ -151,23 +169,24 @@ public class Move : MonoBehaviour
     private IEnumerator Dash()
     {
         canDash = false;
-        Debug.Log("cant dash dipshit");
+        //Debug.Log("cant dash dipshit");
         isDashing = true;
+        an.SetBool("isDash", true);
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(moveInput* dashingPower, 0f);
         yield return new WaitForSeconds(dashingTime);
         rb.gravityScale = originalGravity;
         isDashing=false;
+        an.SetBool("isDash", false);
 
-        
     }
 
     private IEnumerator DashCooldown()
     {
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
-        Debug.Log("can dash dipshit");
+        //Debug.Log("can dash dipshit");
 
     }
 
