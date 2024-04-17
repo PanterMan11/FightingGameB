@@ -113,6 +113,7 @@ public class Move : MonoBehaviour
                 StartCoroutine(DashCooldown());
             }
             rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+            
             if(moveInput != 0)
             {
                 an.SetBool("isMove", true);
