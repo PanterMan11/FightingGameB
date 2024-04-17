@@ -38,6 +38,7 @@ public class Relay : MonoBehaviour
     {
         buttons.SetActive(false);
         Allocation a = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
+        
         joinCodeText.text = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
         transport.SetHostRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData);
         NetworkManager.Singleton.StartHost();
@@ -46,8 +47,7 @@ public class Relay : MonoBehaviour
     public async void JoinGame()
     {
         buttons.SetActive(false);
-
-        JoinAllocation a = await RelayService.Instance.JoinAllocationAsync(joinCodeText.text);
+        JoinAllocation a = await RelayService.Instance.JoinAllocationAsync(joinInput.text);
 
         transport.SetClientRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData, a.HostConnectionData);
         NetworkManager.Singleton.StartClient();

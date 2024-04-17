@@ -48,7 +48,7 @@ public class Attack : NetworkBehaviour {
     };
     [NonSerialized] Attacks currentAttack = Attacks.None;
 
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +56,11 @@ public class Attack : NetworkBehaviour {
             x.HitBox.SetActive(false);
         }
     }
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) enabled = false;
+    }
+    
     // Update is called once per frame
     void Update()
     {

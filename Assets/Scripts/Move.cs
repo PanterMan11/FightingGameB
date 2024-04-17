@@ -47,7 +47,7 @@ public class Move : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) Destroy(this);
+        if (!IsOwner) enabled =false;
     }
     
     
