@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Move : MonoBehaviour
+public class Move : NetworkBehaviour
 {
 
     [SerializeField] Rigidbody2D rb;
@@ -42,7 +43,11 @@ public class Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         Physics2D.IgnoreLayerCollision(7, 7);
+    }
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) Destroy(this);
     }
     
     

@@ -671,11 +671,11 @@ PlayerSettings:
   apiCompatibilityLevel: 3
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 6c245d48-4627-46b9-b99c-5ea60642ea79
+  cloudProjectId: 09b11a03-89db-4af2-946e-4bb4a0b43598
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Fighting Game
-  organizationId: erenyigitersoy1
+  projectName: Fighting Game (1)
+  organizationId: freshlybakedbread
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
