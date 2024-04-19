@@ -104,7 +104,7 @@ public class Move : NetworkBehaviour
     }
     private void FixedUpdate()
     {
-        if (!attackScript.isCoolDown)
+        if (!attackScript.isCoolDown || isJumping)
         {
             if (isDashing)
             {
